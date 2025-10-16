@@ -1,98 +1,81 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+<div style="text-align: center;">
+  <img src="assets/nest+stripe.jpg" alt="capa" width="200" />
+</div>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+### Descrição do Projeto
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Este projeto tem como objetivo o estudo da integração com o Stripe, Node.js com o framework Nestjs. Este projeto é uma aplicação relativamente simples, criada com foco no estudo da integração com o Stripe, sem preocupação com retornos complexos ou tratamento avançado de erros. A API permite criar usuários, que podem realizar assinaturas diretamente no Stripe. A aplicação utiliza docker-compose para subir um container com PostgreSQL, e o Prisma como ORM. Além disso, a aplicação está configurada para escutar webhooks do Stripe e processar os eventos recebidos.
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Tecnologias utilizadas no projeto
 
-## Project setup
+- NodeJs
+- NestJS
+- Prisma
+- Docker e docker-compose
+- PostgreSQL
+- Typescript
+- Entre outros
 
-```bash
-$ npm install
-```
+---
 
-## Compile and run the project
+### Arquitetura
 
-```bash
-# development
-$ npm run start
+A arquitetura do projeto segue a seguinte estrutura estrutura:
 
-# watch mode
-$ npm run start:dev
+<pre style="overflow-x: auto; max-width: 1000px; white-space: pre;">
+src/
+│── app/
+│   ├── app.module.ts                       # Arquivo principal do NestJS, onde os módulos da aplicação são configurados
+│
+│── modules/
+│   ├── stripe/
+│   │   ├── infra/                          # Implementações concretas para Stripe (ex: repositórios, integração)
+│   │   ├── services/                       # Serviços relacionados a pagamentos/assinaturas
+│   │   ├── stripe.module.ts                # Módulo do Stripe, integrando serviços e providers
+│   │
+│   ├── user/
+│   │   ├── domain/                         # Entidades e regras de negócio do usuário
+│   │   ├── dto/                            # Objetos de transferência de dados (entrada/saída)
+│   │   ├── infra/                           # Implementações concretas (ex: repositórios)
+│   │   ├── port/                            # Interfaces (contratos) para a camada de usuário
+│   │   ├── services/                        # Serviços de aplicação relacionados a usuário
+│   │   ├── user.module.ts                   # Módulo de usuário
+│
+│── shared/                                  # Recursos compartilhados entre módulos
+│       ├── prisma/
+│           ├── prisma.ts                            # Configuração e instância do Prisma (ORM)
+│
+│── utils/
+│   ├── stripe.ts                            # Utilitários e helpers para Stripe
+│
+│── main.ts                                  # Ponto de entrada da aplicação NestJS
+</pre>
 
-# production mode
-$ npm run start:prod
-```
+---
 
-## Run tests
+### Como rodar o projeto em sua máquina:
 
-```bash
-# unit tests
-$ npm run test
+### Requisitos:
 
-# e2e tests
-$ npm run test:e2e
+- Node na versão _22.15.0_
+- Typescript na _5.7.3_.
+- Conta criada no Stripe para ter os acessos das keys que são necessárias.
 
-# test coverage
-$ npm run test:cov
-```
+### Passo a passo:
 
-## Deployment
+- Primeiramente, clone o projeto com o comando git clone https://github.com/CaioSousaa/stripe-webhook.git
+- Rode o comando `npm i` para instalar as dependências do projeto.
+- Crie um arquivo `.env `e preencha os valores usando as variáveis definidas no arquivo `.env.example`
+- Após isso, rode o comando `docker-compose up -d` para rodar o container Docker com o banco de dados respectivo
+- Após o banco de dados subir, rode os comandos `npx prisma generate` para gerar a pasta `generated` de onde vem o Prisma Client e `npx prisma migrate dev` para subir as migrations
+- Depois, rode o comando `npm run dev` para rodar a aplicação.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+### Material que utilizei para esse estudo
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+- https://medium.com/@Sasindu50/simplify-payments-a-guide-to-integrating-stripe-with-node-js-98307dea0daf
+- https://medium.com/@kisora.thomas/using-stripe-api-and-webhooks-in-your-nest-app-98ba999a8d8c
+- https://youtu.be/W7x3zsm8NoM?si=nYgpTHgBqAVXnbIk
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Caso tenha algua duvida sobre o projeto mande um e-mail para 2004caio.rocha@gmail.com.
