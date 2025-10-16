@@ -1,6 +1,6 @@
-<div style="text-align: center;">
+<p align="center">
   <img src="assets/nest+stripe.jpg" alt="capa" width="200" />
-</div>
+</p>
 
 ### Descrição do Projeto
 
