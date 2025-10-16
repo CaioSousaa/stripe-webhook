@@ -2,6 +2,9 @@ interface UserProps {
   name: string;
   email: string;
   created_at: Date;
+  stripeSubStatus?: string;
+  stripeUserId?: string;
+  stripeSubId?: string;
 }
 
 export class User {
@@ -31,6 +34,22 @@ export class User {
 
   set email(email: string) {
     this.props.email = email;
+  }
+
+  get stripeSubStatus(): string | undefined {
+    return this.props.stripeSubStatus;
+  }
+
+  set stripeSubStatus(stripeSubStatus: string | undefined) {
+    this.props.stripeSubStatus = stripeSubStatus;
+  }
+
+  get stripeUserId(): string | undefined {
+    return this.props.stripeUserId;
+  }
+
+  get stripeSubId(): string | undefined {
+    return this.props.stripeSubId;
   }
 
   get created_at(): Date {
